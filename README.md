@@ -1,5 +1,11 @@
 # DataReaders.jl
 
+[![Build Status](https://travis-ci.org/femtotrader/DataReaders.jl.svg?branch=master)](https://travis-ci.org/femtotrader/DataReaders.jl)
+
+[![Coverage Status](https://coveralls.io/repos/femtotrader/DataReaders.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/femtotrader/DataReaders.jl?branch=master)
+
+[![codecov.io](http://codecov.io/github/femtotrader/DataReaders.jl/coverage.svg?branch=master)](http://codecov.io/github/femtotrader/DataReaders.jl?branch=master)
+
 WORK IN PROGRESS!!!
 
 A [Julia](http://julialang.org/) library to get remote data via [Requests.jl](https://github.com/JuliaWeb/Requests.jl) and get DataFrames thanks to [DataFrames.jl](https://dataframesjl.readthedocs.org/).
@@ -9,7 +15,7 @@ Inspired by [Pandas-DataReader](https://github.com/pydata/pandas-datareader).
 ## Install
 
 ```julia
-Pkg.clone("https://github.com/femtotrader/DataReaders.jl.git")
+Pkg.clone("https://github.com/JuliaDataReaders/DataReaders.jl.git")
 ```
 
 ## Usage
@@ -31,9 +37,11 @@ julia> dt_start = DateTime("2015-04-01");
 
 julia> dt_end = DateTime("2015-04-15");
 
-julia> data = get(source, symb, dt_start, dt_end);
+julia> response = get(dr, symb, dt_start, dt_end);
 
-julia> println(data);
+julia> df = DataFrame(response);
+
+julia> println(df);
 10x6 DataFrames.DataFrame
 │ Row │ Date       │ Open  │ High  │ Low   │ Close │ Volume   │
 ┝━━━━━┿━━━━━━━━━━━━┿━━━━━━━┿━━━━━━━┿━━━━━━━┿━━━━━━━┿━━━━━━━━━━┥
@@ -54,7 +62,7 @@ julia> println(data);
 ```julia
 julia> dr = DataReader("google");
 
-julia> symbols = DataSymbols(["IBM", "MSFT"])
+julia> symbols = DataSymbol.(["IBM", "MSFT"])
 2-element Array{DataReaders.DataSymbol,1}:
  DataReaders.DataSymbol("IBM")
  DataReaders.DataSymbol("MSFT")
@@ -63,7 +71,9 @@ julia> dt_start = DateTime("2015-04-01");
 
 julia> dt_end = DateTime("2015-04-15");
 
-julia> data = get(dr, symbols, dt_start, dt_end);
+julia> multi_symbol_response = get(dr, symbols, dt_start, dt_end);
+
+julia> data = DataFrame(multi_symbol_response);
 
 julia> println(data)
 DataStructures.OrderedDict(DataReaders.DataSymbol("IBM")=>10x6 DataFrames.DataFrame
@@ -95,19 +105,19 @@ DataStructures.OrderedDict(DataReaders.DataSymbol("IBM")=>10x6 DataFrames.DataFr
 
 ## Done / ToDo
 
-###Done:
+### Done:
 
 - Yahoo Finance daily DataReaders
 - Support several symbols for Google Finance daily DataReaders - return as OrderedDict
 - Google Finance daily DataReaders (only one symbol at a time)
+- Unit testing
+- Continuous Integration
 
-###ToDo:
+### ToDo:
 
- - Support several symbols for Google (daily) DataReaders - return as Panel (see https://github.com/JuliaStats/DataFrames.jl/issues/941 )
- - Support others data source (Yahoo...)
- - Requests-cache mechanism (see https://github.com/JuliaLang/HDF5.jl/issues/296 and https://github.com/femtotrader/RequestsCache.jl/)
- - Unit testing
- - Continuous Integration
- - Packaging
- - ...
+- Support several symbols for Google (daily) DataReaders - return as Panel (see https://github.com/JuliaStats/DataFrames.jl/issues/941 )
+- Support others data source (Yahoo...)
+- Requests-cache mechanism (see https://github.com/JuliaLang/HDF5.jl/issues/296 and https://github.com/femtotrader/RequestsCache.jl/)
+- Packaging (publish on METADATA)
+- ...
  
